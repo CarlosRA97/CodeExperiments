@@ -1,7 +1,7 @@
 require 'yaml'
 require 'OpenSSL'
 
-Shoes.app title: "Encrypter", width: 370, height: 300, resizable: false do
+Shoes.app title: "Encrypter", width: 270, height: 200, resizable: false do
   background white
   background tan, height: 40
 
@@ -32,6 +32,7 @@ Shoes.app title: "Encrypter", width: 370, height: 300, resizable: false do
     digest = OpenSSL::Digest.new('sha1', key)
     return digest
   end
+
   def data_path
     if RUBY_PLATFORM =~ /win32/
       if ENV['USERPROFILE']
