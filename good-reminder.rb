@@ -1,32 +1,24 @@
 require 'yaml'
 require 'OpenSSL'
 
-Shoes.app title: "Encrypter", width: 270, height: 200, resizable: false do
+Shoes.app title: "Encrypter", width: 312, height: 60 do
   background white
-  background tan, height: 40
 
-  caption "Encrypter", margin: 8, stroke: white
-
-  stack margin: 10, margin_top: 50 do
-    stack margin_left: 5, margin_right: 10, width: 1.0, height: 200, scroll: true do
+  stack margin: 0, margin_top: 0 do
+    stack margin_left: 5, margin_right: 5, width: 1.0, height: 15 do
       background white
       border white, strokewidth: 3
       @gui_todo = para
     end
 
-    flow margin_top: 10 do
+    flow margin_top: 0, margin_left: 10 do
       para "Hash me"
-      @add = edit_line(margin_left: 10, width: 180)
+      @add = edit_line(margin_left: 10, width: 150)
       button("hash", margin_left: 2)  { pbcopy data_encrypt(@add.text) }
     end
   end
 
-  stack margin_top: 10 do
-    background darkgray
-    para strong('Completed'), stroke: white
-  end
-
-  @gui_completed = stack width: 1.0, height: 207, margin_right: 20
+  @gui_completed = stack width: 1.0, height: 10, margin_right: 20
 
   def data_encrypt(key)
     digest = OpenSSL::Digest.new('sha1', key)
@@ -39,115 +31,4 @@ Shoes.app title: "Encrypter", width: 270, height: 200, resizable: false do
     str
     exit()
   end
-
-  def refresh_todo
-    @gui_todo.replace(
-      *(
-        @todo.map { |item|
-          [item, '  '] + [link('Done') { complete_todo item }] + ['  '] +
-              [link('Forget it') { forget_todo item }] + ["\n"]
-        }.flatten
-      )
-    )
-  end
-
-  def refresh
-    refresh_todo
-
-    @gui_completed.clear
-
-    @gui_completed.append do
-      background white
-
-      @completed.keys.sort.reverse_each { |day|
-        stack do
-          background lightgray
-          para strong(day.strftime('%B %d, %Y')), stroke: white
-        end
-
-        stack do
-          inscription(
-            *(
-              @completed[day].map { |item|
-                [item] + ['  '] + [link('Not Done') { undo_todo day, item }] +
-                    (@completed[day].index(item) == @completed[day].length - 1 ? [''] : ["\n"])
-              }.flatten
-            )
-          )
-        end
-      }
-    end
-  end
-
-  def complete_todo(item)
-    day = Date.today
-
-    if @completed.keys.include? day
-      @completed[day] << item
-    else
-      @completed[day] = [item]
-    end
-
-    @todo.delete(item)
-
-    save
-
-    refresh
-  end
-
-  def undo_todo(day, item)
-    @completed[day].delete item
-
-    @completed.delete(day) if @completed[day].empty?
-
-    @todo << item unless @todo.include? item
-
-    save
-
-    refresh
-  end
-
-  def add_todo(item)
-    item = item.strip
-
-    return if item == ''
-
-    if @todo.include? item
-      alert('You have already added that to the list!')
-      return
-    end
-
-    @todo << item
-
-    save
-
-    refresh_todo
-  end
-
-  def forget_todo(item)
-    @todo.delete item
-
-    save
-
-    refresh_todo
-  end
-
-  def load
-    if File.exist?(data_path)
-      @todo, @completed = YAML::load(File.open(data_path, 'r'))
-    else
-      @todo = []
-      @completed = {}
-    end
-
-    refresh
-  end
-
-  def save
-    File.open(data_path, 'w') { |f|
-      f.write [@todo, @completed].to_yaml
-    }
-  end
-
-  load
 end
