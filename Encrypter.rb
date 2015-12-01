@@ -1,4 +1,3 @@
-require 'yaml'
 require 'OpenSSL'
 
 Shoes.app title: "Encrypter", width: 312, height: 60 do
