@@ -17,7 +17,7 @@ Shoes.app title: "Encrypter", width: 270, height: 200, resizable: false do
     flow margin_top: 10 do
       para "Hash me"
       @add = edit_line(margin_left: 10, width: 180)
-      button("+", margin_left: 2)  { pbcopy data_encrypt(@add.text) }
+      button("hash", margin_left: 2)  { pbcopy data_encrypt(@add.text) }
     end
   end
 
@@ -31,28 +31,6 @@ Shoes.app title: "Encrypter", width: 270, height: 200, resizable: false do
   def data_encrypt(key)
     digest = OpenSSL::Digest.new('sha1', key)
     return digest
-  end
-
-  def data_path
-    if RUBY_PLATFORM =~ /win32/
-      if ENV['USERPROFILE']
-        if File.exist?(File.join(File.expand_path(ENV['USERPROFILE']), "Application Data"))
-          user_data_directory = File.join File.expand_path(ENV['USERPROFILE']), "Application Data", "GentleReminder"
-        else
-          user_data_directory = File.join File.expand_path(ENV['USERPROFILE']), "GentleReminder"
-        end
-      else
-        user_data_directory = File.join File.expand_path(Dir.getwd), "data"
-      end
-    else
-      user_data_directory = File.expand_path(File.join("~", ".gentlereminder"))
-    end
-
-    unless File.exist?(user_data_directory)
-      Dir.mkdir(user_data_directory)
-    end
-
-    return File.join(user_data_directory, "data.yaml")
   end
 
   def pbcopy(input)
