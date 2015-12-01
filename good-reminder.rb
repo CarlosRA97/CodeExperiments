@@ -1,16 +1,13 @@
 require 'yaml'
 require 'OpenSSL'
 
-Shoes.app title: "Encrypter",
-          width: 370, height: 300, resizable: false do
+Shoes.app title: "Encrypter", width: 370, height: 300, resizable: false do
   background white
   background tan, height: 40
 
-  caption "A Gentle Reminder", margin: 8, stroke: white
+  caption "Encrypter", margin: 8, stroke: white
 
   stack margin: 10, margin_top: 50 do
-    para "You need to", stroke: red, fill: yellow
-
     stack margin_left: 5, margin_right: 10, width: 1.0, height: 200, scroll: true do
       background white
       border white, strokewidth: 3
@@ -18,9 +15,9 @@ Shoes.app title: "Encrypter",
     end
 
     flow margin_top: 10 do
-      para "Remember to"
+      para "Hash me"
       @add = edit_line(margin_left: 10, width: 180)
-      button("+", margin_left: 5)  { pbcopy data_encrypt(@add.text) }
+      button("+", margin_left: 2)  { pbcopy data_encrypt(@add.text) }
     end
   end
 
