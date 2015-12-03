@@ -20,7 +20,7 @@ Shoes.app title: "Encrypter", width: 312, height: 60 do
   @gui_completed = stack width: 1.0, height: 10, margin_right: 20
   
   class Actions
-		def initialization
+		def initialize
 		end
 		def data_encrypt(key)
 			digest = OpenSSL::Digest.new('sha1', key)
