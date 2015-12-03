@@ -1,6 +1,28 @@
 require 'OpenSSL'
 
 Shoes.app title: "Encrypter", width: 312, height: 60 do
+  class Actions
+	  	@myApp
+		def initialize(myApp)
+			@myApp = myApp
+		end
+		def data_encrypt(key)
+			@myApp.app do
+				digest = OpenSSL::Digest.new('sha1', key)
+				return digest
+			end
+		end
+
+		def pbcopy(input)
+			@myApp.app do
+				str = input.to_s
+				IO.popen('pbcopy', 'w') { |f| f << str }
+				str
+				exit()
+			end
+		end
+  end
+
   background white
 
   stack margin: 0, margin_top: 0 do
@@ -11,28 +33,16 @@ Shoes.app title: "Encrypter", width: 312, height: 60 do
     end
 
     flow margin_top: 0, margin_left: 10 do
+	    
+	  @myActions = Actions.new(self)
       para "Hash me"
       @add = edit_line(margin_left: 10, width: 150)
-      button("hash", margin_left: 2)  { act.pbcopy(act.data_encrypt(@add.text)) }
+      button("hash", margin_left: 2) do 
+	      @myActions.pbcopy(@myActions.data_encrypt(@add.text))
+	  end
     end
   end
 
   @gui_completed = stack width: 1.0, height: 10, margin_right: 20
   
-  class Actions
-		def initialize
-		end
-		def data_encrypt(key)
-			digest = OpenSSL::Digest.new('sha1', key)
-			return digest
-		end
-
-		def pbcopy(input)
-			str = input.to_s
-			IO.popen('pbcopy', 'w') { |f| f << str }
-			str
-			exit()
-		end
-  end
-  act = Actions.new
 end
