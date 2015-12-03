@@ -13,21 +13,25 @@ Shoes.app title: "Encrypter", width: 312, height: 60 do
     flow margin_top: 0, margin_left: 10 do
       para "Hash me"
       @add = edit_line(margin_left: 10, width: 150)
-      button("hash", margin_left: 2)  { pbcopy data_encrypt @add.text }
+      button("hash", margin_left: 2)  { Actions.pbcopy(Actions.data_encrypt(@add.text)) }
     end
   end
 
   @gui_completed = stack width: 1.0, height: 10, margin_right: 20
+  
+  class Actions
+		def initialization
+		end
+		def data_encrypt(key)
+			digest = OpenSSL::Digest.new('sha1', key)
+			return digest
+		end
 
-  def data_encrypt(key)
-    digest = OpenSSL::Digest.new('sha1', key)
-    return digest
-  end
-
-  def pbcopy(input)
-    str = input.to_s
-    IO.popen('pbcopy', 'w') { |f| f << str }
-    str
-    exit()
+		def pbcopy(input)
+			str = input.to_s
+			IO.popen('pbcopy', 'w') { |f| f << str }
+			str
+			exit()
+		end
   end
 end
