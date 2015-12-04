@@ -21,6 +21,11 @@ Shoes.app title: "Encrypter", width: 312, height: 60 do
 				exit()
 			end
 		end
+		def WMCopy (input)
+			@myApp.app do
+				copy(input)
+			end
+		end
   end
 
   background white
@@ -35,6 +40,7 @@ Shoes.app title: "Encrypter", width: 312, height: 60 do
     flow margin_top: 0, margin_left: 10 do
 	    
 	  @myActions = Actions.new(self)
+	  
       para "Hash me"
       @add = edit_line(margin_left: 10, width: 150)
       button("hash", margin_left: 2) do 
