@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
-require 'fileutils'
+#require 'fileutils'
 
-FileUtils.copy_entry , '/home/carlos/Copy'
+#FileUtils.copy_entry , '/home/carlos/Copy'
 
 src = '/media/'
 
