@@ -21,11 +21,6 @@ Shoes.app title: "Encrypter", width: 312, height: 60 do
 				exit()
 			end
 		end
-		def WMCopy (input)
-			@myApp.app do
-				copy(input)
-			end
-		end
   end
 
   background white
