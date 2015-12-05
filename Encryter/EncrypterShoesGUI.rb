@@ -22,7 +22,9 @@ Shoes.app title: "Encrypter", width: 312, height: 60 do
 			end
 		end
 		
-		def 
+		def chooseOS
+			@myApp.app do
+				if 
   end
 
   background white
