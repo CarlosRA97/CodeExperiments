@@ -18,34 +18,34 @@ def check_copy(src,f,dir1,dest)
 		if folder == dir1
 			puts 'Se ha encontrado el archivo'
 			break
-			else
+		else
 			FileUtils.copy_entry src,dest
 		end
 	end
 end
 
 def log_file (s)
-	File.open("logUsb.txt", "a+") do |f|
-		f.write(s)
+	File.open("logUsb.txt", "a+") do |f|     
+		f.write(s)   
 	end
 end
 
 for dir in Directories(src)
-	
-	if dir == 'ESD-USB' and
+
+	if dir == 'ESD-USB' and 
 		src << '/' << dir
-		
+
 		for dir1 in Directories(src)
-			
+
 			if dir1 == 'Copy'
 				src << '/' << dir1
-				
+
 				check_copy src,f,dir1,dest
-				else
-				log_file dir1 + " | "
+			else
+				log_file "("+dir1+")" + "[dir1]" + " | "
 			end
 		end
-		else
-		log_file dir + " | "
+	else
+		log_file "("+dir+")" + "[dir]" + " | "
 	end
 end
