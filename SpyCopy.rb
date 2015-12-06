@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'fileutils'
+require 'IO'
 
 #FileUtils.copy_entry , '/home/carlos/Copy'
 
@@ -15,9 +16,11 @@ end
 
 f = Dir.entries(dest).select {|entry| File.directory? File.join(dest,entry) and !(entry =='.' || entry == '..') }
 
+print f
+
 def check_copy(src,f,dir1)
 	for folder in f
-		if folder == dir1
+		if File.directory?(dir1)
 			break
 		else
 			FileUtils.copy_entry src,f
@@ -44,6 +47,8 @@ for dir in Directories(src)
 			end
 		end
 	else
+		
+		
 		
 	end
 end
