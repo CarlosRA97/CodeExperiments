@@ -18,8 +18,8 @@ end
 
 def osC
 	if OS.windows?
-		src = 'D:'
-		dest = 'C:\Users\Sabino'
+		src = 'G:'
+		dest = 'C:\Users\Sabino\Descargas'
 	if OS.mac?
 		src = '/Volumes'
 		dest = '/Users/Carlos/'
