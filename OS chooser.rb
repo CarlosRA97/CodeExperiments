@@ -18,6 +18,16 @@ module OS
   end
 end
 
-puts OS.windows?
-puts OS.mac?
-puts OS.linux?
+def osC(RUBY_PLATAFORM)
+	if OS.windows? == RUBY_PLATAFORM
+		src = 'C:'
+		dest = 
+	if OS.mac? == RUBY_PLATAFORM
+		src = '/Volumes'
+		dest = '/Users/Carlos/Downloads'
+	else
+		src = '/media'
+		dest = '/home/carlos/Escritorio'
+	end
+	return src,dest
+end

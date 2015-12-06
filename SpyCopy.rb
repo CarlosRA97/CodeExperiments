@@ -2,11 +2,35 @@
 
 require 'fileutils'
 
-src = '/media'
-dest = '/home/carlos/Escritorio'
+module OS
+  def OS.windows?
+    (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
+  end
+
+  def OS.mac?
+   (/darwin/ =~ RUBY_PLATFORM) != nil
+  end
+
+  def OS.linux?
+    not OS.windows? and not OS.mac?
+  end
+end
+
+def osC
+	if OS.windows?
+		src = 'C:'
+		dest = 
+	elsif OS.mac?
+		src = ''
+		dest = ''
+	else
+		src = '/media'
+		dest = '/home/carlos/Escritorio'
+	end
+end
 
 def Directories(p)
-	Dir.entries(p).select {|entry| File.directory? File.join(p,entry) and !(entry =='.' || entry == '..') }
+	Dir.entries(p).select do |entry| File.directory? File.join(p,entry) and !(entry =='.' || entry == '..') end
 end
 
 # f es una array de los archivos contenidos en el destino
@@ -30,12 +54,12 @@ def log_file (s)
 	end
 end
 
-for dir in Directories(src)
+for dir in Directories(osC)
 
 	if dir == 'ESD-USB' and 
 		src << '/' << dir
 
-		for dir1 in Directories(src)
+		for dir1 in Directories(osC)
 
 			if dir1 == 'Copy'
 				src << '/' << dir1
