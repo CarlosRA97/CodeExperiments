@@ -49,7 +49,7 @@ def check_copy(src,f,dir1,dest)
 end
 
 def log_file (s)
-	File.open("logUsb.txt", "a+") do |f|     
+	File.open("logUsb.txt", "w+") do |f|     
 		f.write(s)   
 	end
 end
