@@ -21,9 +21,6 @@ dest = '/Users/Carlos/' if mac?
 src = '/media/sabino' if linux?
 dest = '/home/sabino/' if linux?
 
- src
- dest
-
 def Directories(p)
 	Dir.entries(p).select do |entry| File.directory? File.join(p,entry) and !(entry =='.' || entry == '..') end
 end
