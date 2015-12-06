@@ -18,11 +18,11 @@ end
 
 def osC
 	if OS.windows?
-		src = 'C:'
-		dest = 
-	elsif OS.mac?
-		src = ''
-		dest = ''
+		src = 'D:'
+		dest = 'C:\Users\Sabino'
+	if OS.mac?
+		src = '/Volumes'
+		dest = '/Users/Carlos/'
 	else
 		src = '/media'
 		dest = '/home/carlos/Escritorio'
@@ -54,12 +54,12 @@ def log_file (s)
 	end
 end
 
-for dir in Directories(osC)
+for dir in Directories(src)
 
 	if dir == 'ESD-USB' and 
 		src << '/' << dir
 
-		for dir1 in Directories(osC)
+		for dir1 in Directories(src)
 
 			if dir1 == 'Copy'
 				src << '/' << dir1
