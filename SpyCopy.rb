@@ -18,8 +18,11 @@ dest = 'C:\Users\Sabino\Descargas' if windows?
 src = '/Volumes' if mac?
 dest = '/Users/Carlos/' if mac?
 
-src = '/media/sabino' if linux?
-dest = '/home/sabino/' if linux?
+src = '/media' if linux?
+dest = '/home/carlos/' if linux?
+
+src2 = File.join(src,"*")
+puts Dir.glob(File.join(src2,"**")) 
 
 def Directories(p)
 	Dir.entries(p).select do |entry| File.directory? File.join(p,entry) and !(entry =='.' || entry == '..') end
