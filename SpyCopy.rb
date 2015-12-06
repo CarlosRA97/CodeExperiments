@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'fileutils'
+#require 'fileutils'
 
 #FileUtils.copy_entry , '/home/carlos/Copy'
 
@@ -18,23 +18,28 @@ for dir in Directories
 		print src << '/' << dir
 		puts ''
 
-		dir1 = Dir.entries(src).select {|entry| File.directory? File.join(src,entry) and !(entry =='.' || entry == '..') }
+		Directories = Dir.entries(src).select {|entry| File.directory? File.join(src,entry) and !(entry =='.' || entry == '..') }
+		print Directories
 
-		print dir1
 		puts ''
-	end
-end
+		for dir1 in Directories
 
-for dir2 in dir1
-	if dir1 == 'Copy'
-		print src << '/' << dir2
-		puts '3'
-		dir3 = Dir.entries(src).select {|entry| File.directory? File.join(src,entry) and !(entry =='.' || entry == '..') }
-		File.open("out.txt", "w") do |f|     
-			f.write(src)   
+			if dir1 == 'Copy'
+				print src << '/' << dir1
+				puts ''
+
+				Directories = Dir.entries(src).select {|entry| File.directory? File.join(src,entry) and !(entry =='.' || entry == '..') }
+				print Directories
+
+				puts ''
+				#File.open("out.txt", "w") do |f|     
+				#	f.write(src)   
+				#end
+			end
 		end
 	end
 end
+
 	
 
 #FileUtils.copy_entry src,f
