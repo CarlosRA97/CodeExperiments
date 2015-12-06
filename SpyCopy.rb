@@ -16,18 +16,17 @@ module OS
   end
 end
 
-def osC
-	if OS.windows?
-		src = 'G:'
-		dest = 'C:\Users\Sabino\Descargas'
-	if OS.mac?
-		src = '/Volumes'
-		dest = '/Users/Carlos/'
-	else
-		src = '/media'
-		dest = '/home/carlos/Escritorio'
-	end
-end
+src = 'G:' if OS.windows?
+dest = 'C:\Users\Sabino\Descargas' if OS.windows?
+
+src = '/Volumes' if OS.mac?
+dest = '/Users/Carlos/' if OS.mac?
+
+src = '/media' if OS.linux?
+dest = '/home/carlos/Escritorio' if OS.linux?
+
+puts src
+puts dest
 
 def Directories(p)
 	Dir.entries(p).select do |entry| File.directory? File.join(p,entry) and !(entry =='.' || entry == '..') end
