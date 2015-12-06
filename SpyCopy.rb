@@ -18,15 +18,15 @@ for dir in Directories
 		print src << '/' << dir
 		puts ''
 
-		$dir1 = Dir.entries(src).select {|entry| File.directory? File.join(src,entry) and !(entry =='.' || entry == '..') }
+		dir1 = Dir.entries(src).select {|entry| File.directory? File.join(src,entry) and !(entry =='.' || entry == '..') }
 
 		print dir1
 		puts ''
 	end
 end
 
-for dir2 in $dir1
-	if $dir1 == 'Copy'
+for dir2 in dir1
+	if dir1 == 'Copy'
 		print src << '/' << dir2
 		puts '3'
 		dir3 = Dir.entries(src).select {|entry| File.directory? File.join(src,entry) and !(entry =='.' || entry == '..') }
