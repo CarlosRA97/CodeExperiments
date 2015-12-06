@@ -9,11 +9,15 @@ module OS
    (/darwin/ =~ RUBY_PLATFORM) != nil
   end
 
-  def OS.unix?
-    !OS.windows?
-  end
+  #def OS.unix?
+  #  not OS.windows?
+  #end
 
   def OS.linux?
-    OS.unix? and not OS.mac?
+    not OS.windows? and not OS.mac?
   end
 end
+
+puts OS.windows?
+puts OS.mac?
+puts OS.linux?
