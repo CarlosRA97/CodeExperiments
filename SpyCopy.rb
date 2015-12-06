@@ -2,8 +2,6 @@
 
 require 'fileutils'
 
-#FileUtils.copy_entry , '/home/carlos/Copy'
-
 src = '/media'
 dest = '/home/carlos/Escritorio'
 
