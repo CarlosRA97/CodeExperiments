@@ -6,13 +6,13 @@ class Host_os
 	def initialize
 	end
 	def windows?
-		(/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RbConfig::CONFIG["host_os"]) != nil
+		w = (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RbConfig::CONFIG["host_os"]) != nil
 	end
 	def mac?
-		(/darwin/ =~ RbConfig::CONFIG["host_os"]) != nil
+		m = (/darwin/ =~ RbConfig::CONFIG["host_os"]) != nil
 	end
 	def linux?
-		not windows? and not mac?
+		l = !windows? and !mac?
 	end
 end
 
@@ -24,10 +24,10 @@ class Action
 	def searchfCopy(src,dest)
 		for dir in arraySrc
 			if dir == ''
-				@Directories.defaultDir(src) << '/' << dir
+				src << '/' << dir
 				for dir1 in @Directories.arrayDir(@Directories.defaultDir)
 					if dir1 == ''
-						@Directories.defaultDir(src) << '/' << dir1
+						src << '/' << dir1
 						check_copy src,dir1,dest
 					end
 				end
@@ -60,22 +60,25 @@ class Action
 end
 
 class Directories
-	def initialize()
-		@host_os = Host_os.new
+	def initialize(w,m,l)
+		@host_os = Host_os.new(w,m,l)
+		@host_os.windows?
+		@host_os.mac?
+		@host_os.linux?
 	end
 	
 	def arrayDir(p)
 		return Dir.entries(p).select do |entry| File.directory? File.join(p,entry) and !(entry =='.' || entry == '..') end
 	end
-	def defaultDir
-		src = 'G:' if @host_os.windows?
-		dest = 'C:\Users\Sabino\Descargas' if @host_os.windows?
+	def defaultDir(w,m,l)
+		src = 'G:' if w
+		dest = 'C:\Users\Sabino\Descargas' if w
 
-		src = '/Volumes' if @host_os.mac?
-		dest = '/Users/Carlos/' if @host_os.mac?
+		src = '/Volumes' if m
+		dest = '/Users/Carlos/' if m
 
-		src = '/media' if @host_os.linux?
-		dest = '/home/carlos/' if @host_os.linux?
+		src = '/media' if l
+		dest = '/home/carlos/' if l
 	end
 	def subDir(src)
 		Dir.glob(File.join(src,"**","**","**")) 
