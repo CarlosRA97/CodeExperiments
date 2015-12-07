@@ -17,11 +17,8 @@ class Host_os
 end
 
 class Action	
-	def initialize
+	def initialize(src)
 		@Directories = Directories.new
-		src = @Directories.defaultDir.src
-		dest = @Directories.defaultDir.dest
-		arraySrc = @Directories.arrayDir(src)
 	end
 	
 	def searchfCopy(src,dest)
@@ -43,7 +40,7 @@ class Action
 		f = Dir.entries(dest).select {|entry| File.directory? File.join(dest,entry) and !(entry =='.' || entry == '..') }	
 	
 		for folder in f
-			if File.exist? dir1
+			if File.exist? dir1 and folder == dir1
 				break
 			else
 				next
@@ -80,8 +77,8 @@ class Directories
 		return src = '/media' if @host_os.linux?
 		return dest = '/home/carlos/' if @host_os.linux?
 	end
-	def subDir
-		return subDir = Dir.glob(File.join(src,"**","**","**")) 
+	def subDir(src)
+		Dir.glob(File.join(src,"**","**","**")) 
 	end
 end
 
