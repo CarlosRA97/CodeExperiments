@@ -22,7 +22,7 @@ src = '/media' if linux?
 dest = '/home/carlos/' if linux?
 
 src2 = File.join(src,"*")
-puts Dir.glob(File.join(src2,"**")) 
+subDir = Dir.glob(File.join(src2,"**")) 
 
 def Directories(p)
 	Dir.entries(p).select do |entry| File.directory? File.join(p,entry) and !(entry =='.' || entry == '..') end
@@ -46,7 +46,7 @@ end
 
 def log_file (s,o)
 	File.open("logUsb.txt", o) do |f|
-		f.write(s)
+		f << s
 	end
 end
 def search(src,dest)
@@ -71,6 +71,6 @@ def search(src,dest)
 	end
 end
 
-while true
-	search src,dest
-end
+search src,dest
+
+log_file subDir, 'a+'
