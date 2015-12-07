@@ -2,7 +2,7 @@
 
 require 'fileutils'
 
-class OS?
+class host_os
 	def initialize
 	end
 	def windows?
@@ -16,65 +16,76 @@ class OS?
 	end
 end
 
-src = 'G:' if OS?.windows?
-dest = 'C:\Users\Sabino\Descargas' if OS?.windows?
-
-src = '/Volumes' if OS?.mac?
-dest = '/Users/Carlos/' if OS?.mac?
-
-src = '/media' if OS?.linux?
-dest = '/home/carlos/' if OS?.linux?
-
-src2 = File.join(src,"*")
-subDir = Dir.glob(File.join(src2,"**")) 
-
-def Directories(p)
-	Dir.entries(p).select do |entry| File.directory? File.join(p,entry) and !(entry =='.' || entry == '..') end
-end
-
-def check_copy(src,dir1,dest)
-	
-	# f es una array de los archivos contenidos en el destino
-	f = Dir.entries(dest).select {|entry| File.directory? File.join(dest,entry) and !(entry =='.' || entry == '..') }	
-	
-	for folder in f
-		if folder == dir1
-			break
-		else
-			next
-		end
+class action	
+	def initialize
+		@Directories = Directories.new
 	end
-	FileUtils.copy_entry src,dest
-end
-
-def log_file (s,o)
-	File.open("logUsb.txt", o) do |f|
-		f << s
-	end
-end
-
-def search(src,dest)
-	for dir in Directories(src)
-		if dir == 'ESD-USB'
-			src << '/' << dir
-			for dir1 in Directories(src)
-				if dir1 == 'Copy'
-					src << '/' << dir1
-					check_copy src,dir1,dest
-				else
-					log_file "("+dir1+")" + "[dir1]" + " | ", "a+"
+	
+	def searchfCopy(src,dest)
+		for dir in @Directories.arrayDir(@Directories.defaultDir(src))
+			if dir == ''
+				@Directories.defaultDir(src) << '/' << dir
+				for dir1 in @Directories.arrayDir(@Directories.defaultDir(src))
+					if dir1 == ''
+						@Directories.defaultDir(src) << '/' << dir1
+						check_copy src,dir1,dest
+					end
 				end
 			end
-		else
-			if File.file? 'logUsb.txt'
-				log_file "("+dir+")" + "[dir]" + " | ", "r+"
+		end
+	end
+	
+	def checkCopy(src,dir1,dest)
+		# f es una array de los archivos contenidos en el destino
+		f = Dir.entries(dest).select {|entry| File.directory? File.join(dest,entry) and !(entry =='.' || entry == '..') }	
+	
+		for folder in f
+			if File.exist? dir1
+				break
 			else
-				log_file "("+dir+")" + "[dir]" + " | ", "w+"
+				next
 			end
 		end
+		FileUtils.copy_entry src,dest
+	end
+	
+	def logFile (s,option)
+		File.open("logUsb.txt", option) do |f|
+			f << s
+		end
+	end
+	
+	def logOutput
+end
+
+class Directories
+	def initialize
+		@host_os = host_os.new
+	end
+	
+	def arrayDir(p)
+		return Dir.entries(p).select do |entry| File.directory? File.join(p,entry) and !(entry =='.' || entry == '..') end
+	end
+	def defaultDir
+		return src = 'G:' if @host_os.windows?
+		return dest = 'C:\Users\Sabino\Descargas' if @host_os.windows?
+
+		return src = '/Volumes' if @host_os.mac?
+		return dest = '/Users/Carlos/' if @host_os.mac?
+
+		return src = '/media' if @host_os.linux?
+		return dest = '/home/carlos/' if @host_os.linux?
+	end
+	def subDir
+		$subDir = Dir.glob(File.join(src,"**","**","**")) 
 	end
 end
 
-search src,dest
+action = action.new
 
-log_file subDir, 'a+'
+puts action.defaultDir
+
+
+#action.search src,dest
+
+#log_file subDir, 'a+'
