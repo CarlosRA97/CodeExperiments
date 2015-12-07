@@ -2,7 +2,7 @@
 
 require 'fileutils'
 
-class host_os
+class Host_os
 	def initialize
 	end
 	def windows?
@@ -16,16 +16,19 @@ class host_os
 	end
 end
 
-class action	
+class Action	
 	def initialize
 		@Directories = Directories.new
+		src = @Directories.defaultDir.src
+		dest = @Directories.defaultDir.dest
+		arraySrc = @Directories.arrayDir(src)
 	end
 	
 	def searchfCopy(src,dest)
-		for dir in @Directories.arrayDir(@Directories.defaultDir(src))
+		for dir in arraySrc
 			if dir == ''
 				@Directories.defaultDir(src) << '/' << dir
-				for dir1 in @Directories.arrayDir(@Directories.defaultDir(src))
+				for dir1 in @Directories.arrayDir(@Directories.defaultDir)
 					if dir1 == ''
 						@Directories.defaultDir(src) << '/' << dir1
 						check_copy src,dir1,dest
@@ -56,6 +59,7 @@ class action
 	end
 	
 	def logOutput
+	end
 end
 
 class Directories
@@ -77,13 +81,15 @@ class Directories
 		return dest = '/home/carlos/' if @host_os.linux?
 	end
 	def subDir
-		$subDir = Dir.glob(File.join(src,"**","**","**")) 
+		return subDir = Dir.glob(File.join(src,"**","**","**")) 
 	end
 end
 
-action = action.new
+host = Host_os.new
+dir = Directories.new(host)
+action = Action.new(dir)
 
-puts action.defaultDir
+puts action.searchfCopy(dir.defaultDir,dir.defaultDir)
 
 
 #action.search src,dest
