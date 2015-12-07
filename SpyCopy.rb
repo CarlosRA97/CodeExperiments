@@ -60,22 +60,22 @@ class Action
 end
 
 class Directories
-	def initialize
-		@host_os = host_os.new
+	def initialize()
+		@host_os = Host_os.new
 	end
 	
 	def arrayDir(p)
 		return Dir.entries(p).select do |entry| File.directory? File.join(p,entry) and !(entry =='.' || entry == '..') end
 	end
 	def defaultDir
-		return src = 'G:' if @host_os.windows?
-		return dest = 'C:\Users\Sabino\Descargas' if @host_os.windows?
+		src = 'G:' if @host_os.windows?
+		dest = 'C:\Users\Sabino\Descargas' if @host_os.windows?
 
-		return src = '/Volumes' if @host_os.mac?
-		return dest = '/Users/Carlos/' if @host_os.mac?
+		src = '/Volumes' if @host_os.mac?
+		dest = '/Users/Carlos/' if @host_os.mac?
 
-		return src = '/media' if @host_os.linux?
-		return dest = '/home/carlos/' if @host_os.linux?
+		src = '/media' if @host_os.linux?
+		dest = '/home/carlos/' if @host_os.linux?
 	end
 	def subDir(src)
 		Dir.glob(File.join(src,"**","**","**")) 
@@ -87,6 +87,7 @@ dir = Directories.new(host)
 action = Action.new(dir)
 
 puts action.searchfCopy(dir.defaultDir,dir.defaultDir)
+puts action.methods
 
 
 #action.search src,dest
