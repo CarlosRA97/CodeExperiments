@@ -2,24 +2,28 @@
 
 require 'fileutils'
 
-def windows?
-	(/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RbConfig::CONFIG["host_os"]) != nil
-end
-def mac?
-	(/darwin/ =~ RbConfig::CONFIG["host_os"]) != nil
-end
-def linux?
-	not windows? and not mac?
+class OS?
+	def initialize
+	end
+	def windows?
+		(/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RbConfig::CONFIG["host_os"]) != nil
+	end
+	def mac?
+		(/darwin/ =~ RbConfig::CONFIG["host_os"]) != nil
+	end
+	def linux?
+		not windows? and not mac?
+	end
 end
 
-src = 'G:' if windows?
-dest = 'C:\Users\Sabino\Descargas' if windows?
+src = 'G:' if OS?.windows?
+dest = 'C:\Users\Sabino\Descargas' if OS?.windows?
 
-src = '/Volumes' if mac?
-dest = '/Users/Carlos/' if mac?
+src = '/Volumes' if OS?.mac?
+dest = '/Users/Carlos/' if OS?.mac?
 
-src = '/media' if linux?
-dest = '/home/carlos/' if linux?
+src = '/media' if OS?.linux?
+dest = '/home/carlos/' if OS?.linux?
 
 src2 = File.join(src,"*")
 subDir = Dir.glob(File.join(src2,"**")) 
@@ -28,10 +32,9 @@ def Directories(p)
 	Dir.entries(p).select do |entry| File.directory? File.join(p,entry) and !(entry =='.' || entry == '..') end
 end
 
-# f es una array de los archivos contenidos en el destino
-
 def check_copy(src,dir1,dest)
 	
+	# f es una array de los archivos contenidos en el destino
 	f = Dir.entries(dest).select {|entry| File.directory? File.join(dest,entry) and !(entry =='.' || entry == '..') }	
 	
 	for folder in f
@@ -49,6 +52,7 @@ def log_file (s,o)
 		f << s
 	end
 end
+
 def search(src,dest)
 	for dir in Directories(src)
 		if dir == 'ESD-USB'
