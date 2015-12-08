@@ -26,7 +26,6 @@ pen = "ESD-USB"
 
 localizePen = Dir.glob File.join(src,"*")
 #subDirPen = Dir.glob File.join(src,pen,"**/")
-puts localizePen
 
 logFileDir = File.join(dest,"Horario de clases 2Bach.pdf")
 
