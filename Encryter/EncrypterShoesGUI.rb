@@ -2,29 +2,24 @@ require 'OpenSSL'
 
 Shoes.app title: "Encrypter", width: 312, height: 60 do
   class Actions
-	  	@myApp
-		def initialize(myApp)
-			@myApp = myApp
+	@myApp
+	def initialize(myApp)
+		@myApp = myApp
+	end
+	def data_encrypt(key)
+		@myApp.app do
+			digest = OpenSSL::Digest.new('sha1', key)
+			return digest
 		end
-		def data_encrypt(key)
-			@myApp.app do
-				digest = OpenSSL::Digest.new('sha1', key)
-				return digest
-			end
+	end
+	def unixCopy(input)
+		@myApp.app do
+			str = input.to_s
+			IO.popen('pbcopy', 'w') { |f| f << str }
+			str
+			exit()
 		end
-
-		def unixCopy(input)
-			@myApp.app do
-				str = input.to_s
-				IO.popen('pbcopy', 'w') { |f| f << str }
-				str
-				exit()
-			end
-		end
-		
-		def chooseOS
-			@myApp.app do
-				if 
+	end
   end
 
   background white
