@@ -1,5 +1,3 @@
-#!/usr/bin/env pythonw
-
 ######################## FUNCIONES DE LA APLICACION ####################################
 
 # Importa paquetes necesarios
@@ -37,7 +35,7 @@ raiz = Tk()
 
 #Modifica la ventana y lo que hay dentro
 raiz.title('Sha1 Generator')
-raiz.geometry('195x108')
+raiz.geometry('205x108')
 
     #Ventana
 ventana = Frame(raiz)
@@ -54,7 +52,7 @@ button = Button(ventana, text="Hash it!", command=hacer_click)
 button.grid(column=2, row=3, padx=(5,5), pady=(5,5))
 
     #Campo de entrada de texto
-entrada_txt = Entry(ventana, width=20, textvariable="")
+entrada_txt = Entry(ventana, width=20, textvariable="", show='*')
 entrada_txt.grid(column=2, row=2)
 
 #Poner en marcha el ciclo de eventos
